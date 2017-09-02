@@ -208,6 +208,9 @@ a.link:hover, a.link:focus {
 .page-wrapper{
 	min-height: 530px;
 }
+.icon-service{
+	width: 40px;
+}
 
 @media (max-width: 500px) {
 	.span{
