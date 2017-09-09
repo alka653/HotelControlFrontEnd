@@ -1,8 +1,6 @@
 import Header from '../components/Header.js'
 import Footer from '../components/Footer.js'
-//import { subscribeToTimer } from '../components/Api.js'
-import openSocket from 'socket.io-client'
-const socket = openSocket('http://localhost:5000/area/promedio')
+import BoxAvgService from '../components/BoxAvgService.js'
 import { Link } from 'react-router-dom'
 import React from 'react'
 
@@ -10,7 +8,6 @@ export default class Home extends React.Component {
 	constructor(){
 		super()
 		this.state = {
-			timestamp: 'Cargando',
 			lista_areas: [
 				<div key="0" className="col-md-12 text-center">
 					<div className="card">
@@ -23,16 +20,14 @@ export default class Home extends React.Component {
 		}
 	}
 	componentDidMount(){
-		socket.on('timer', timestamp => {
-			this.setState({
-				timestamp: timestamp
-			})
-		})
-		let _this = this;
-		let content = [];
+		let _this = this
+		let content = []
 		$.get(server_url+"area", function(response){
 			$.each(response, function(index, value){
 				$.each(value, function(_index, _value){
+					let sensores = _value.consumo_tolerable.map(function(val, key){
+						return <BoxAvgService data_sensor={val} slug_area={_value.slug_area} key={key} />
+					})
 					content.push(
 						<div className="col-md-4" key={_index}>
 							<div className="card">
@@ -41,14 +36,7 @@ export default class Home extends React.Component {
 										<h3 className="font-normal">{ _value.nombre_area }</h3>
 									</div>
 									<div className="col-md-6 row text-center">
-										{ _value.consumo_tolerable.map((__value, __index) => {
-											return(
-												<div className="col-md-6" key={ __index }>
-													<img className="icon-service" src={ base_url+"assets/img/"+__value.tipo_sensor.slug_tipo+".png" } alt={_value.slug_area} />
-													<b>18.9</b>
-												</div>
-											)
-										}) }
+										{sensores}
 									</div>
 								</div>
 							</div>
@@ -68,7 +56,6 @@ export default class Home extends React.Component {
 				<div className="page-wrapper">
 					<div className="container-fluid">
 						<div className="row">
-							{ this.state.timestamp }
 							{ this.state.lista_areas }
 						</div>
 					</div>
