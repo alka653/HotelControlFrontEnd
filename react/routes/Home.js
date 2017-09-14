@@ -1,6 +1,6 @@
+import BoxAvgService from '../components/BoxAvgService.js'
 import Header from '../components/Header.js'
 import Footer from '../components/Footer.js'
-import BoxAvgService from '../components/BoxAvgService.js'
 import { Link } from 'react-router-dom'
 import React from 'react'
 
@@ -22,25 +22,33 @@ export default class Home extends React.Component {
 	componentDidMount(){
 		let _this = this
 		let content = []
+		let style = {
+			display: 'block'
+		}
 		$.get(server_url+"area", function(response){
 			$.each(response, function(index, value){
 				$.each(value, function(_index, _value){
 					let sensores = _value.consumo_tolerable.map(function(val, key){
-						return <BoxAvgService data_sensor={val} slug_area={_value.slug_area} key={key} />
+						return (
+							<div className="col-md-6 text-center" key={key}>
+								<img className="icon-service" src={ base_url+"assets/img/"+val.tipo_sensor.slug_tipo+".png" }/>
+								<BoxAvgService data_sensor={val} slug_area={_value.slug_area} style={style} key={key} />
+							</div>
+						)
 					})
 					content.push(
-						<div className="col-md-4" key={_index}>
+						<Link to={"/area/"+_value.slug_area} className="col-md-4" key={_index} id="store-link">
 							<div className="card">
 								<div className="card-block row">
-									<div className="col-md-6">
+									<div className="col-md-5">
 										<h3 className="font-normal">{ _value.nombre_area }</h3>
 									</div>
-									<div className="col-md-6 row text-center">
+									<div className="col-md-7 row text-center">
 										{sensores}
 									</div>
 								</div>
 							</div>
-						</div>
+						</Link>
 					)
 				})
 			})
