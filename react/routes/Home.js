@@ -32,7 +32,7 @@ export default class Home extends React.Component {
 						return (
 							<div className="col-md-6 text-center" key={key}>
 								<img className="icon-service" src={ base_url+"assets/img/"+val.tipo_sensor.slug_tipo+".png" }/>
-								<BoxAvgService data_sensor={val} slug_area={_value.slug_area} style={style} key={key} />
+								<BoxAvgService data_sensor={val} slug_area={_value.slug_area} style={style} key={key} type="home" />
 							</div>
 						)
 					})
