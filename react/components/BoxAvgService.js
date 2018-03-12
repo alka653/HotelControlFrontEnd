@@ -11,7 +11,13 @@ export default class BoxAvgService extends React.Component {
 		}
 	}
 	convertConsumo(json_val, key){
-		return JSON.parse(json_val)[key]
+		let value = ''
+		try{
+			value = JSON.parse(json_val)[key]
+		}catch(error){
+			value = '0'
+		}
+		return value
 	}
 	componentDidMount(){
 		let socket_box_avg_service = openSocket.connect('http://localhost:5000/area/promedio/'+this.props.data_sensor.tipo_sensor.slug_tipo+'/'+this.props.slug_area)

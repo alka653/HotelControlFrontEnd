@@ -33,7 +33,7 @@ export default class Area extends React.Component {
 		}
 		$.each(data.consumo_tolerable, function(index, value){
 			content.push(
-				<div key={index} className="col-md-6">
+				<div key={index} className="col-md-6" style={{marginBottom: 5}}>
 					<div className="row">
 						<div className="col-md-2 text-center">
 							<img style={{ width: 50 }} src={ base_url+"assets/img/"+value.tipo_sensor.slug_tipo+".png" }/>
@@ -55,7 +55,7 @@ export default class Area extends React.Component {
 		let content = []
 		$.each(sensores, function(index, value){
 			content.push(
-				<div className="col-md-12" key={index}>
+				<div className="col-md-12" key={index} style={{marginBottom: 5}}>
 					<GraphSensor value={value} />
 				</div>
 			)

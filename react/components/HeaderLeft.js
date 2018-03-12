@@ -16,6 +16,11 @@ export default class HeaderLeft extends React.Component {
 									<i className="fa fa-home m-r-10" aria-hidden="true"></i> Inicio
 								</Link>
 							</li>
+							<li>
+								<Link to="/configuracion" className="waves-effect" id="home-link">
+									<i className="fa fa-home m-r-10" aria-hidden="true"></i> Configuración
+								</Link>
+							</li>
 						</ul>
 					</nav>
 				</div>
