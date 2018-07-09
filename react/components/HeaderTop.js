@@ -7,7 +7,7 @@ export default class HeaderTop extends React.Component {
 	}
 	render(){
 		return (
-			<header className="topbar">
+			<div classname="navbar-header">
 				<nav className="navbar top-navbar navbar-toggleable-sm navbar-light">
 					<div className="navbar-header">
 						<Link to="/" className="navbar-brand">
@@ -26,7 +26,7 @@ export default class HeaderTop extends React.Component {
 						</ul>
 					</div>
 				</nav>
-			</header>
+			</div>
 		)
 	}
 }

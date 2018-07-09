@@ -6,9 +6,9 @@ export default class Footer extends React.Component {
 	}
 	render(){
 		return (
-			<footer className="footer text-center">
-				&copy; Desarrollado por Adriann Sanchez
-			</footer>
+			<div className="copy">
+				<p>&copy; Desarrollado por Adriann Sanchez</p>
+			</div>
 		)
 	}
 }

@@ -25,7 +25,7 @@ export default class Home extends React.Component {
 		let style = {
 			display: 'block'
 		}
-		$.get(server_url+"area", function(response){
+		$.get(server_url+"area/true", function(response){
 			$.each(response, function(index, value){
 				$.each(value, function(_index, _value){
 					let sensores = _value.consumo_tolerable.map(function(val, key){
@@ -38,8 +38,8 @@ export default class Home extends React.Component {
 					})
 					content.push(
 						<Link to={"/area/"+_value.slug_area} className="col-md-4" key={_index} id="store-link">
-							<div className="card">
-								<div className="card-block row">
+							<div className="blank-page">
+								<div className="row">
 									<div className="col-md-5">
 										<h3 className="font-normal">{ _value.nombre_area }</h3>
 									</div>
@@ -59,16 +59,18 @@ export default class Home extends React.Component {
 	}
 	render(){
 		return (
-			<div>
+			<div id="wrapper">
 				<Header />
-				<div className="page-wrapper">
-					<div className="container-fluid">
-						<div className="row">
-							{ this.state.lista_areas }
+				<div id="page-wrapper" className="gray-bg dashbard-1">
+					<div className="content-main">
+						<div className="blank">
+							<div className="row">
+								{ this.state.lista_areas }
+							</div>
 						</div>
 					</div>
+					<Footer />
 				</div>
-				<Footer />
 			</div>
 		)
 	}

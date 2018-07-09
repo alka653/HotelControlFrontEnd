@@ -75,10 +75,8 @@ export default class GraphSensor extends React.Component {
 	}
 	render(){
 		return (
-			<div className="card">
-				<div className="card-block">
-					<div id={"chartSensor-"+this.state.identificador} style={{width: window.innerWidth - 360, height: 250}}></div>
-				</div>
+			<div className="blank-page">
+				<div id={"chartSensor-"+this.state.identificador} style={{width: window.innerWidth - 360, height: 250}}></div>
 			</div>
 		)
 	}
