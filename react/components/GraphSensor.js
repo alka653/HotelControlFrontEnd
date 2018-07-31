@@ -1,8 +1,9 @@
-import openSocket from 'socket.io-client'
 import '../../assets/js/jquery.flot'
 import '../../assets/js/jquery.flot.tooltip.min'
 import '../../assets/js/jquery.flot.time'
-import React from 'react'
+import React, { Component } from 'react'
+
+const openSocket = require('socket.io-client')
 
 let plotObj
 let content_data = []
@@ -29,43 +30,65 @@ let options = {
 	}
 }
 
-export default class GraphSensor extends React.Component {
-	constructor(){
-		super()
-		this.state = {
-			identificador: '0'
-		}
+export default class GraphSensor extends Component {
+	state = {
+		identificador: this.props.value.identificacion_sensor,
+		data_to_graph: [],
+		last_date: ''
 	}
 	componentWillMount(){
-		let _this = this
+		const _this = this
 		_this.setState({
-			identificador: _this.props.value.identificacion_sensor,
 			tipo: _this.props.value.tipo_sensor
 		})
 	}
 	componentDidMount(){
-		let _this = this
+		const _this = this
 		let data = []
 		$.get(server_url+"sensor/"+_this.state.identificador+"/consumo-dia", function(response){
 			data = _this.objectData(response)
-			$.plot($("#chartSensor-"+_this.state.identificador), [_this.seriesObj(data)], options)
+			_this.refreshDataGraph(data)
 		})
-		let socket_graph_sensor = openSocket.connect('http://localhost:5000/sensor/consumo/'+_this.state.identificador)
-		socket_graph_sensor.on('consumoGraficoReal', value => {
-			_this.refreshDataGraph(_this.objectData(value))
+		//$.plot($("#chartSensor-"+_this.state.identificador), [_this.seriesObj(data)], options)
+		let socket_graph_sensor = openSocket(server_url+'sensor/consumo/'+_this.state.identificador, { jsonp: false, transport: ['websocket'] })
+		socket_graph_sensor.on('consumoGraficoReal', (value) => {
+			//_this.objectData(value)
+			const content_value = value.object
+			if(content_value != null && Object.keys(content_value).length > 0){
+				let data_to_append = _this.state.data_to_graph
+				const split_time = content_value.fecha.split(":")
+				if(_this.state.last_date == split_time[0]+':'+split_time[1]+':'+split_time[2]+':'+split_time[3]+':'+split_time[4]){
+					data_to_append.data.pop()
+				}
+				data_to_append.data.push([new Date(Date.UTC(split_time[0], split_time[1], split_time[2], split_time[3], split_time[4])), content_value.medida_sensor])
+				_this.setState({
+					data_to_append: data_to_append,
+					last_date: split_time[0]+':'+split_time[1]+':'+split_time[2]+':'+split_time[3]+':'+split_time[4]
+				})
+				console.log(data_to_append)
+				_this.refreshDataGraph(data_to_append)
+			}
 		})
 	}
 	objectData(response){
 		let data = []
+		let last_date = ''
+		const _this = this
 		$.each(response, function(index, value){
 			$.each(value, function(_index, _value){
-				data.push([new Date(_value.fecha), _value.medida_sensor])
+				const split_time = _value.fecha.split(":")
+				data.push([new Date(Date.UTC(split_time[0], split_time[1], split_time[2], split_time[3], split_time[4])), _value.medida_sensor])
+				last_date = split_time[0]+':'+split_time[1]+':'+split_time[2]+':'+split_time[3]+':'+split_time[4]
 			})
 		})
-		return data
+		this.setState({
+			data_to_graph: _this.seriesObj(data),
+			last_date: last_date
+		})
+		return _this.seriesObj(data)
 	}
 	refreshDataGraph(data){
-		$.plot($("#chartSensor-"+this.state.identificador), [this.seriesObj(data)], options)
+		$.plot($("#chartSensor-"+this.state.identificador), [data], options)
 	}
 	seriesObj(data){
 		return {

@@ -2,18 +2,16 @@ import { Modal, FormGroup, ControlLabel, FormControl, Button } from 'react-boots
 import React from 'react'
 
 export default class FormCostoConsumo extends React.Component {
-	constructor(){
-		super()
-		this.state = {
-			mes: '',
-			tipo_sensor: '',
-			precio_base: '',
-			btn_class: 'hide'
-		}
-		this.handleChange = this.handleChange.bind(this)
+	state = {
+		id: '',
+		mes: '',
+		tipo_sensor: '',
+		precio_base: '',
+		btn_class: this.props.btn
 	}
 	componentDidMount(){
-		let _this_ = this
+		const _this_ = this
+		const args = this.props.args
 		let data_mes = []
 		let meses = {
 			'1': 'Enero',
@@ -46,15 +44,26 @@ export default class FormCostoConsumo extends React.Component {
 				data_mes: data_mes
 			})
 		})
+		if(Object.keys(args).length !== 0){
+			_this_.setState({
+				mes: args.mes.id,
+				tipo_sensor: args.tipo_sensor.slug_tipo,
+				precio_base: args.precio_base,
+				id: args.id
+			})
+		}
 	}
-	handleChange(e){
+	handleSendClick = () => {
+		return this.props.saveEvent({'id': this.state.id, 'mes': this.state.mes, 'tipo_sensor': this.state.tipo_sensor, 'precio_base': this.state.precio_base})
+	}
+	handleChange = (e) => {
 		let data = []
 		if(e.target.validity.valid){
 			data[e.target.name] = e.target.value
 			this.setState(data)
 		}
-		if(e.target.name == 'tipo_sensor'){
-			if(this.state.identificacion_sensor != '' && e.target.value != ''){
+		if(e.target.name == 'precio_base'){
+			if(this.state.precio_base != '' && e.target.value != ''){
 				this.setState({
 					btn_class: ''
 				})
@@ -68,26 +77,26 @@ export default class FormCostoConsumo extends React.Component {
 					<form>
 						<FormGroup>
 							<ControlLabel>Mes a ingresar</ControlLabel>
-							<FormControl componentClass="select" name="mes" id="formMes" placeholder="Seleccione una opción" onChange={this.handleChange}>
+							<FormControl componentClass="select" name="mes" id="formMes" value={this.state.mes} placeholder="Seleccione una opción" onChange={this.handleChange}>
 								<option value="">Seleccione una opción</option>
 								{this.state.data_mes}
 							</FormControl>
 						</FormGroup>
 						<FormGroup>
 							<ControlLabel>Tipo de sensor</ControlLabel>
-							<FormControl componentClass="select" name="tipo_sensor" id="formTipoSensor" placeholder="Seleccione una opción" onChange={this.handleChange}>
+							<FormControl componentClass="select" name="tipo_sensor" id="formTipoSensor" value={this.state.tipo_sensor} placeholder="Seleccione una opción" onChange={this.handleChange}>
 								<option value="">Seleccione una opción</option>
 								{this.state.data_tipo_sensor}
 							</FormControl>
 						</FormGroup>
 						<FormGroup>
 							<ControlLabel>Precio base</ControlLabel>
-							<FormControl type="text" className="only-number-float" maxLength="10" id="formPrecioBase" name="precio_base" onChange={this.handleChange} value={this.state.identificacion_sensor} placeholder="Ingrese el precio base" />
+							<FormControl type="text" className="only-number-float" maxLength="10" id="formPrecioBase" name="precio_base" onChange={this.handleChange} value={this.state.precio_base} placeholder="Ingrese el precio base" />
 						</FormGroup>
 					</form>
 				</Modal.Body>
 				<Modal.Footer className={this.state.btn_class}>
-					<Button bsStyle="success" onClick={this.props.saveEvent.bind(this, {'mes': this.state.mes, 'tipo_sensor': this.state.tipo_sensor, 'precio_base': this.state.precio_base})}>Enviar datos</Button>
+					<Button bsStyle="success" onClick={this.handleSendClick}>Enviar datos</Button>
 				</Modal.Footer>
 			</div>
 		)

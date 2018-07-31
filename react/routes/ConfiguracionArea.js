@@ -1,3 +1,4 @@
+import FormArea from '../components/elements/FormArea.js'
 import ModalForm from '../components/ModalForm.js'
 import Header from '../components/Header.js'
 import Footer from '../components/Footer.js'
@@ -6,24 +7,20 @@ import { Link } from 'react-router-dom'
 import React from 'react'
 
 export default class ConfiguracionArea extends React.Component {
-	constructor(){
-		super()
-		this.state = {
-			lista_areas: [
-				<div key="0" className="col-md-12 text-center">
-					<div className="blank-page">
-						<h3 className="font-normal">Cargando áreas...</h3>
-					</div>
+	state = {
+		lista_areas: [
+			<div key="0" className="col-md-12 text-center">
+				<div className="blank-page">
+					<h3 className="font-normal">Cargando áreas...</h3>
 				</div>
-			],
-			showModal: false
-		}
-		this.saveArea = this.saveArea.bind(this)
+			</div>
+		],
+		showModal: false
 	}
 	componentDidMount(){
 		this.loadArea()
 	}
-	saveArea(content_data){
+	saveArea = (content_data) => {
 		let _this = this
 		$.ajax({
 			type: "POST",
@@ -87,7 +84,12 @@ export default class ConfiguracionArea extends React.Component {
 							</div>
 						</div>
 					</div>
-					<ModalForm handleShow={this.state.showModal} typeModal="area_form" handleClose={modalClose} saveEvent={this.saveArea} />
+					{
+						this.state.showModal &&
+						<ModalForm handleShow={this.state.showModal} title="Crear área" handleClose={modalClose}>
+							<FormArea saveEvent={this.saveArea} />
+						</ModalForm>
+					}
 					<Footer />
 				</div>
 			</div>

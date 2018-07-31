@@ -2,15 +2,11 @@ import { Modal, FormGroup, ControlLabel, FormControl, Button } from 'react-boots
 import React from 'react'
 
 export default class FormConsumoTolerable extends React.Component {
-	constructor(){
-		super()
-		this.state = {
-			tipo_sensor: '',
-			slug_area: '',
-			data_tipo_sensor: '',
-			btn_class: 'hide'
-		}
-		this.handleChange = this.handleChange.bind(this)
+	state = {
+		tipo_sensor: '',
+		slug_area: '',
+		data_tipo_sensor: '',
+		btn_class: 'hide'
 	}
 	componentDidMount(){
 		let _this_ = this
@@ -61,7 +57,7 @@ export default class FormConsumoTolerable extends React.Component {
 					</form>
 				</Modal.Body>
 				<Modal.Footer className={this.state.btn_class}>
-					<Button bsStyle="success" onClick={this.props.saveEvent.bind(this, {'identificacion_sensor': this.state.identificacion_sensor, 'slug_area': this.state.slug_area, 'tipo_sensor': this.state.tipo_sensor})}>Enviar datos</Button>
+					<Button bsStyle="success" onClick={this.props.saveEvent(this, {'identificacion_sensor': this.state.identificacion_sensor, 'slug_area': this.state.slug_area, 'tipo_sensor': this.state.tipo_sensor})}>Enviar datos</Button>
 				</Modal.Footer>
 			</div>
 		)

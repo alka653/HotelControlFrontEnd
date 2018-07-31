@@ -1,14 +1,17 @@
-import openSocket from 'socket.io-client'
 import React from 'react'
 
+const openSocket = require('socket.io-client')
+
 export default class BoxAvgService extends React.Component {
-	constructor(){
-		super()
-		this.state = {
-			consumo_promedio: '0',
-			consumo_maximo: '0',
-			consumo_mensual: '0'
-		}
+	state = {
+		consumo_promedio: '0',
+		consumo_maximo: '0',
+		consumo_mensual: '0'
+	}
+	setStateAsync(state) {
+		return new Promise((resolve) => {
+			this.setState(state, resolve)
+		});
 	}
 	convertConsumo(json_val, key){
 		let value = ''
@@ -19,14 +22,14 @@ export default class BoxAvgService extends React.Component {
 		}
 		return value
 	}
-	componentDidMount(){
-		let socket_box_avg_service = openSocket.connect('http://localhost:5000/area/promedio/'+this.props.data_sensor.tipo_sensor.slug_tipo+'/'+this.props.slug_area)
+	componentWillMount(){
 		this.setState({
-			consumo_promedio: this.convertConsumo(this.props.data_sensor.tipo_sensor.consumo_promedio, 'consumo_promedio_dia'),
-			consumo_maximo: this.convertConsumo(this.props.data_sensor.tipo_sensor.consumo_promedio, 'consumo_maximo_dia'),
-			consumo_mensual: this.convertConsumo(this.props.data_sensor.tipo_sensor.consumo_promedio, 'consumo_promedio_mensual')
+			consumo_promedio: this.convertConsumo(this.props.data_sensor.consumo_promedio, 'consumo_promedio_dia'),
+			consumo_maximo: this.convertConsumo(this.props.data_sensor.consumo_promedio, 'consumo_maximo_dia'),
+			consumo_mensual: this.convertConsumo(this.props.data_sensor.consumo_promedio, 'consumo_promedio_mensual')
 		})
-		socket_box_avg_service.on('consumoPromedioGeneral', value => {
+		let socket_box_avg_service = openSocket('http://localhost:5000/area/promedio/'+this.props.data_sensor.slug_tipo+'/'+this.props.slug_area, { jsonp: false, transport: ['websocket'] })
+		socket_box_avg_service.on('consumoPromedioGeneral', (value) => {
 			this.setState({
 				consumo_promedio: this.convertConsumo(value, 'consumo_promedio_dia'),
 				consumo_maximo: this.convertConsumo(value, 'consumo_maximo_dia'),
