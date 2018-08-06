@@ -38,6 +38,21 @@ export default class ConfiguracionArea extends React.Component {
 		})
 		return false
 	}
+	getStyleOnArea = (estado_id, total_sensores) => {
+		let style = {
+			height: 90,
+			marginBottom: 5
+		};
+		if(estado_id == 1){
+			style.borderTop = '2px solid #27ae60';
+		}else{
+			style.borderTop = '2px solid #c0392b';
+		}
+		if(total_sensores == null){
+			style.borderTop = '2px solid #f1c40f';
+		}
+		return style;
+	}
 	loadArea(){
 		let content = []
 		let _this = this
@@ -46,7 +61,7 @@ export default class ConfiguracionArea extends React.Component {
 				$.each(value, function(_index, _value){
 					content.push(
 						<Link to={"/area/"+_value.slug_area} className="col-md-4" key={_index} id="store-link">
-							<div className="blank-page" style={{ height: 90, marginBottom: 5 }}>
+							<div className="blank-page" style={_this.getStyleOnArea(_value.estado_id, _value.total_sensores)}>
 								<div className="row">
 									<div className="col-md-7">
 										<h3 className="font-normal">Área { _value.nombre_area }</h3>

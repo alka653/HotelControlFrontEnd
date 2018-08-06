@@ -28,6 +28,7 @@ export default class Area extends Component {
 		nombre_area: '',
 		showModal: false,
 		titleModal: '',
+		btnAction: [],
 		args: {}
 	}
 	componentDidMount(){
@@ -39,9 +40,21 @@ export default class Area extends Component {
 			titleModal: 'Agregar sensor al área'
 		})
 	}
+	changeState = (event) => {
+		$.ajax({
+			type: "POST",
+			contentType: "application/json; charset=utf-8",
+			url: server_url+"area/estado",
+			dataType: "json",
+			data: '{"estado_id": "'+event.target.getAttribute('data-state')+'", "slug_area": "'+event.target.getAttribute('data-slug')+'"}',
+			success: function(response){
+				alert(response['response'])
+				window.location.reload()
+			}
+		})
+	}
 	saveAction = (content_data) => {
 		let _this_ = this
-		console.log(content_data)
 		$.ajax({
 			type: "POST",
 			contentType: "application/json; charset=utf-8",
@@ -116,6 +129,11 @@ export default class Area extends Component {
 				nombre_area: value.nombre_area,
 				sensor_general: _this.viewConsumoTolerable(value),
 				metrica: _this.viewSensorGraph(value.sensores),
+				btnAction: value.estado_id == 1 ? [
+						<Button key={value.estado_id} bsStyle="danger" onClick={_this.changeState} data-state={2} data-slug={_this.props.match.params.slug_area}>Desactivar área</Button>
+					]: [
+						<Button key={value.estado_id} bsStyle="success" onClick={_this.changeState} data-state={1} data-slug={_this.props.match.params.slug_area}>Activar área</Button>
+					],
 				args: {
 					'slug_area': value.slug_area,
 					'nombre_area': value.nombre_area
@@ -133,6 +151,7 @@ export default class Area extends Component {
 						<div className="blank">
 							<div className="row text-center">
 								<Button bsStyle="info" onClick={this.FormSensor} data-slug={this.props.match.params.slug_area}>Agregar sensor</Button>
+								{this.state.btnAction}
 							</div>
 							<div className="row">
 								{ this.state.sensor_general }

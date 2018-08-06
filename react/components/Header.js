@@ -44,9 +44,21 @@ export default class Header extends React.Component {
 								</li>
 								<li>
 									<Link to="/configuracion-costo-consumo" className="hvr-bounce-to-right">
-										<i className="fa fa-check-square-o nav_icon"></i>
+										<i className="fa fa-pencil nav_icon"></i>
 										Costo de consumo
 									</Link>
+								</li>
+								<li>
+									<Link to="#" className="hvr-bounce-to-right">
+										<i className="fa fa-file-o nav_icon"></i> <span className="nav-label">Reportes</span><span className="fa arrow"></span>
+									</Link>
+									<ul className="nav nav-second-level">
+										<li>
+											<Link to="/configuracion-area" className="hvr-bounce-to-right">
+												<i className="fa fa-arrow-right nav_icon"></i>Reporte Mensual
+											</Link>
+										</li>
+									</ul>
 								</li>
 							</ul>
 						</div>

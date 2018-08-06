@@ -29,6 +29,16 @@ export default class ConfiguracionCostoConsumo extends React.Component {
 			]
 		})
 	}
+	toNumberString = (num, tipo_sensor_id) => {
+		let value_return = '';
+		num = new Intl.NumberFormat({maximumSignificantDigits: 2}).format(num);
+		if(Number.isInteger(num)){
+			value_return = num + ".0"
+		} else {
+			value_return = num.toString();
+		}
+		return tipo_sensor_id == 12 ? value_return+" Kw": value_return+" m3"
+	}
 	saveAction = (content_data) =>{
 		const _this_ = this
 		$.ajax({
@@ -94,13 +104,14 @@ export default class ConfiguracionCostoConsumo extends React.Component {
 							{
 								Object.keys(data_table).map(function(key, index){
 									const value = data_table[key]
+									const consumo = value['tipo_sensor']['id'] == 12 ? (parseFloat(value['consumo_mes']) / 1000): parseFloat(value['consumo_mes']);
 									return(
 										<tr key={key}>
 											<td>{value['mes']['nombre_mes']}</td>
 											<td>{value['tipo_sensor']['nombre_tipo']}</td>
 											<td>{(value['precio_base']).format(2)}</td>
-											<td>0</td>
-											<td>0</td>
+											<td>{_this_.toNumberString(consumo, value['tipo_sensor']['id'])}</td>
+											<td>$ {new Intl.NumberFormat("es-CO", {maximumSignificantDigits: 2}).format(consumo * value['precio_base'])}</td>
 											<td>{value['fecha_ingreso']}</td>
 											<td>
 												<Button bsStyle="success" className="btn-sm" onClick={_this_.updateFormCostoConsumo} data-id={value['id']}>Editar</Button>
