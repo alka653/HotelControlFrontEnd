@@ -3,9 +3,6 @@ import { Link } from 'react-router-dom'
 import React from 'react'
 
 export default class Header extends React.Component {
-	constructor(){
-		super()
-	}
 	render(){
 		return (
 			<nav key="0.0" className="navbar-default navbar-static-top" role="navigation">
@@ -54,7 +51,7 @@ export default class Header extends React.Component {
 									</Link>
 									<ul className="nav nav-second-level">
 										<li>
-											<Link to="/configuracion-area" className="hvr-bounce-to-right">
+											<Link to="/reporte-mensual" className="hvr-bounce-to-right">
 												<i className="fa fa-arrow-right nav_icon"></i>Reporte Mensual
 											</Link>
 										</li>

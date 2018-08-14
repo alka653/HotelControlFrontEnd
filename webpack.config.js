@@ -7,11 +7,11 @@ module.exports = (env) => {
 		new ExtractTextPlugin("css/[name].css")
 	]
 
-	if (env.NODE_ENV === 'production') {
+	//if (env.NODE_ENV === 'production') {
 		plugins.push(
 			new CleanWebpackPlugin(['dist'], {root: __dirname})
 		)
-	}
+	//}
 
 	return {
 

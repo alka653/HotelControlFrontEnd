@@ -3,22 +3,18 @@ import { Link } from 'react-router-dom'
 import React from 'react'
 
 export default class Login extends React.Component {
-	constructor(){
-		super()
-		this.state = {
-			username: '',
-			password: ''
-		}
-		this.authenticateAction = this.authenticateAction.bind(this)
-		this.onChange = this.onChange.bind(this)
+	state = {
+		username: '',
+		password: ''
 	}
-	authenticateAction(){
-		PostData('login', this.state).then((response) => {
+	authenticateAction = () => {
+		/*PostData('login', this.state).then((response) => {
 			console.log(response)
 		})
-		return false
+		return false*/
+		window.location = "/"
 	}
-	onChange(e){
+	onChange = (e) => {
 		this.setState({
 			[e.target.name]: e.target.value
 		})
@@ -38,7 +34,7 @@ export default class Login extends React.Component {
 					</div>
 					<div className="login-do">
 						<label className="hvr-shutter-in-horizontal login-sub">
-							<input type="submit" value="Ingresar" onClick={this.authenticateAction.bind(this)} />
+							<input type="submit" value="Ingresar" onClick={this.authenticateAction} />
 						</label>
 					</div>
 					<div className="clearfix"></div>

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import Home from './routes/Home.js'
 import Area from './routes/Area.js'
 import Login from './routes/Login.js'
+import ReporteMensual from './routes/ReporteMensual.js'
 import ConfiguracionArea from './routes/ConfiguracionArea.js'
 import { HashRouter as Router, Route } from 'react-router-dom'
 import ConfiguracionCostoConsumo from './routes/ConfiguracionCostoConsumo.js'
@@ -17,6 +18,7 @@ ReactDOM.render(
 				<Route exact path='/configuracion-area' component={ConfiguracionArea} />
 				<Route exact path='/configuracion-costo-consumo' component={ConfiguracionCostoConsumo} />
 				<Route exact path='/ingresar' component={Login} />
+				<Route exact path='/reporte-mensual' component={ReporteMensual} />
 			</div>
 		</Router>
 	</HandleError>

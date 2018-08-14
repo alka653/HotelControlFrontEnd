@@ -5,19 +5,16 @@ import { Link } from 'react-router-dom'
 import React from 'react'
 
 export default class Home extends React.Component {
-	constructor(){
-		super()
-		this.state = {
-			lista_areas: [
-				<div key="0" className="col-md-12 text-center">
-					<div className="card">
-						<div className="card-block">
-							<h3 className="font-normal">Cargando áreas...</h3>
-						</div>
+	state = {
+		lista_areas: [
+			<div key="0" className="col-md-12 text-center">
+				<div className="card">
+					<div className="card-block">
+						<h3 className="font-normal">Cargando áreas...</h3>
 					</div>
 				</div>
-			]
-		}
+			</div>
+		]
 	}
 	componentDidMount(){
 		let _this = this
