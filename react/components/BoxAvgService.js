@@ -28,7 +28,7 @@ export default class BoxAvgService extends React.Component {
 			consumo_maximo: this.convertConsumo(this.props.data_sensor.consumo_promedio, 'consumo_maximo_dia'),
 			consumo_mensual: this.convertConsumo(this.props.data_sensor.consumo_promedio, 'consumo_promedio_mensual')
 		})
-		let socket_box_avg_service = openSocket(base_url+'area/promedio/'+this.props.data_sensor.slug_tipo+'/'+this.props.slug_area, { jsonp: false, transport: ['websocket'] })
+		let socket_box_avg_service = openSocket(`${base_url}area/promedio/${this.props.data_sensor.slug_tipo}/${this.props.slug_area}`, { jsonp: false, transport: ['websocket'] })
 		socket_box_avg_service.on('consumoPromedioGeneral', (value) => {
 			this.setState({
 				consumo_promedio: this.convertConsumo(value, 'consumo_promedio_dia'),

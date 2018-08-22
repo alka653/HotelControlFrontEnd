@@ -44,9 +44,9 @@ export default class Area extends Component {
 		$.ajax({
 			type: "POST",
 			contentType: "application/json; charset=utf-8",
-			url: server_url+"area/estado",
+			url: `${server_url}area/estado`,
 			dataType: "json",
-			data: '{"estado_id": "'+event.target.getAttribute('data-state')+'", "slug_area": "'+event.target.getAttribute('data-slug')+'"}',
+			data: `{"estado_id": "${event.target.getAttribute('data-state')}", "slug_area": "${event.target.getAttribute('data-slug')}"}`,
 			success: function(response){
 				alert(response['response'])
 				window.location.reload()
@@ -58,9 +58,9 @@ export default class Area extends Component {
 		$.ajax({
 			type: "POST",
 			contentType: "application/json; charset=utf-8",
-			url: server_url+"area/"+content_data['slug_area']+"/sensor/guardar",
+			url: `${server_url}area/${content_data['slug_area']}/sensor/guardar`,
 			dataType: "json",
-			data: '{"identificacion_sensor": "'+content_data['identificacion_sensor']+ '", "tipo_sensor": "'+content_data['tipo_sensor']+'", "slug_area": "'+content_data['slug_area']+'"}',
+			data: `{"identificacion_sensor": "${content_data['identificacion_sensor']}", "tipo_sensor": "${content_data['tipo_sensor']}", "slug_area": "${content_data['slug_area']}"}`,
 			success: function(response){
 				_this_.setState({
 					showModal: false
@@ -84,7 +84,7 @@ export default class Area extends Component {
 					<div key={index} className="col-md-6" style={{marginBottom: 5}}>
 						<div className="row">
 							<div className="col-md-2 text-center">
-								<img style={{ width: 50 }} src={ base_url+"assets/img/"+value.slug_tipo+".png" }/>
+								<img style={{ width: 50 }} src={ `${base_url}assets/img/${value.slug_tipo}.png` }/>
 							</div>
 							<div className="col-md-10">
 								<div className="blank-page">
@@ -121,7 +121,7 @@ export default class Area extends Component {
 	}
 	show_sensor = () => {
 		let _this = this
-		$.get(server_url+"area/false?slug_area="+this.props.match.params.slug_area, function(response){
+		$.get(`${server_url}area/false?slug_area=${this.props.match.params.slug_area}`, function(response){
 			let value = response.object[0]
 			ReactDOM.render(<span>{ value.nombre_area }</span>, document.getElementById('title'))
 			_this.setState({

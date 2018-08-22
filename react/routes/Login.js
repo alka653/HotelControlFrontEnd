@@ -1,18 +1,38 @@
-import { PostData } from '../services/PostData.js'
+import { postData, setIdToken } from '../services/PostData.js'
+import { Redirect } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import React from 'react'
 
 export default class Login extends React.Component {
 	state = {
 		username: '',
-		password: ''
+		password: '',
+		message: '',
+		redirect: false
 	}
 	authenticateAction = () => {
-		/*PostData('login', this.state).then((response) => {
-			console.log(response)
+		this.setState({
+			message: [
+				<div className="alert alert-info" role="alert" key="0">
+					Cargando ...
+				</div>
+			]
 		})
-		return false*/
-		window.location = "/"
+		postData('login', this.state).then((response) => {
+			this.setState({
+				message: [
+					<div className={`alert alert-${response.response}`} role="alert" key="0">
+						{response.msg}
+					</div>
+				]
+			})
+			if(response.logged){
+				setIdToken(response.data)
+				this.setState({
+					redirect: true
+				})
+			}
+		})
 	}
 	onChange = (e) => {
 		this.setState({
@@ -20,10 +40,11 @@ export default class Login extends React.Component {
 		})
 	}
 	render(){
-		return (
+		return !this.state.redirect ? (
 			<div className="login">
 				<h1>HotelControl</h1>
 				<div className="login-bottom">
+					{this.state.message}
 					<div className="login-mail">
 						<input type="text" name="username" placeholder="Usuario" required="" onChange={this.onChange} />
 						<i className="fa fa-user"></i>
@@ -40,6 +61,6 @@ export default class Login extends React.Component {
 					<div className="clearfix"></div>
 				</div>
 			</div>
-		)
+		): <Redirect to='/' />
 	}
 }

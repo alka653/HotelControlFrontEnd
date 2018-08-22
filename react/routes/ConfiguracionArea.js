@@ -25,9 +25,9 @@ export default class ConfiguracionArea extends React.Component {
 		$.ajax({
 			type: "POST",
 			contentType: "application/json; charset=utf-8",
-			url: server_url+"area/guardar",
+			url: `${server_url}area/guardar`,
 			dataType: "json",
-			data: '{"nombre_area":"' + content_data['nombre_area']+ '"}',
+			data: `{"nombre_area":"${content_data['nombre_area']}"}`,
 			success: function(response){
 				_this.setState({
 					showModal: false
@@ -56,11 +56,11 @@ export default class ConfiguracionArea extends React.Component {
 	loadArea(){
 		let content = []
 		let _this = this
-		$.get(server_url+"area/false", function(response){
+		$.get(`${server_url}area/false`, function(response){
 			$.each(response, function(index, value){
 				$.each(value, function(_index, _value){
 					content.push(
-						<Link to={"/area/"+_value.slug_area} className="col-md-4" key={_index} id="store-link">
+						<Link to={`/area/${_value.slug_area}`} className="col-md-4" key={_index} id="store-link">
 							<div className="blank-page" style={_this.getStyleOnArea(_value.estado_id, _value.total_sensores)}>
 								<div className="row">
 									<div className="col-md-7">

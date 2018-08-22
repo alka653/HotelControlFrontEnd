@@ -33,20 +33,20 @@ export default class ConfiguracionCostoConsumo extends React.Component {
 		let value_return = '';
 		num = new Intl.NumberFormat({maximumSignificantDigits: 2}).format(num);
 		if(Number.isInteger(num)){
-			value_return = num + ".0"
+			value_return = `${num} .0`
 		} else {
 			value_return = num.toString();
 		}
-		return tipo_sensor_id == 12 ? value_return+" Kw": value_return+" m3"
+		return tipo_sensor_id == 12 ? `${value_return} Kw`: `${value_return} m3`
 	}
 	saveAction = (content_data) =>{
 		const _this_ = this
 		$.ajax({
 			type: "POST",
 			contentType: "application/json; charset=utf-8",
-			url: server_url+"configuracion/precio-consumo"+(content_data['id'] != "" ? "/"+content_data['id']: ""),
+			url: `${server_url}configuracion/precio-consumo${(content_data['id'] != "" ? "/"+content_data['id']: "")}`,
 			dataType: "json",
-			data: '{"mes":"' + content_data['mes']+ '", "tipo_sensor":"' + content_data['tipo_sensor']+ '", "precio_base":"' + content_data['precio_base']+ '"}',
+			data: `{"mes":"${content_data['mes']}", "tipo_sensor":"${content_data['tipo_sensor']}", "precio_base":"${content_data['precio_base']}"}`,
 			success: function(response){
 				_this_.setState({
 					showModal: false
@@ -76,14 +76,14 @@ export default class ConfiguracionCostoConsumo extends React.Component {
 	}
 	deleteCostoConsumo = (event) => {
 		const _this_ = this
-		$.get(server_url+'configuracion/precio-consumo/'+event.target.getAttribute('data-id')+'/eliminar', function(response){
+		$.get(`${server_url}configuracion/precio-consumo/${event.target.getAttribute('data-id')}/eliminar`, function(response){
 			alert(response['response'])
 			_this_.loadData()
 		})
 	}
 	loadData = () => {
 		const _this_ = this
-		$.get(server_url+'configuracion/precio-consumo', function(data_table){
+		$.get(`${server_url}configuracion/precio-consumo`, function(data_table){
 			data_table = data_table.object
 			_this_.setState({
 				data: data_table,

@@ -32,7 +32,7 @@ export default class FormCostoConsumo extends React.Component {
 				<option key={index} value={index}>{value}</option>
 			)
 		})
-		$.get(server_url+"type-sensor", function(response){
+		$.get(`${server_url}type-sensor`, function(response){
 			let data = []
 			$.each(response.object, function(index, value){
 				data.push(

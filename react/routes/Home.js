@@ -22,19 +22,19 @@ export default class Home extends React.Component {
 		let style = {
 			display: 'block'
 		}
-		$.get(server_url+"area/true", function(response){
+		$.get(`${server_url}area/true`, function(response){
 			$.each(response, function(index, value){
 				$.each(value, function(_index, _value){
 					let sensores = _value.consumo_tolerable.map(function(val, key){
 						return (
 							<div className="col-md-6 text-center" key={key}>
-								<img className="icon-service" src={ base_url+"assets/img/"+val.slug_tipo+".png" }/>
+								<img className="icon-service" src={ `${base_url}assets/img/${val.slug_tipo}.png` }/>
 								<BoxAvgService data_sensor={val} slug_area={_value.slug_area} style={style} key={key} type="home" />
 							</div>
 						)
 					})
 					content.push(
-						<Link to={"/area/"+_value.slug_area} className="col-md-4" key={_index} id="store-link">
+						<Link to={`/area/${_value.slug_area}`} className="col-md-4" key={_index} id="store-link">
 							<div className="blank-page">
 								<div className="row">
 									<div className="col-md-5">
